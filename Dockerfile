@@ -1,11 +1,11 @@
 FROM golang:1.9.3
-ADD ./code /go/src/github.com/exercise_gitlab
-WORKDIR /go/src/github.com/exercise_gitlab
+ADD . /go/src/github.com/golearn
+WORKDIR /go/src/github.com/golearn
 
 RUN go get -u github.com/unrolled/render
 
-RUN go install github.com/exercise_gitlab/code
+RUN go install github.com/golearn
 
-ENTRYPOINT /go/bin/exercise_gitlab
+ENTRYPOINT /go/bin/golearn
 
 EXPOSE 8080

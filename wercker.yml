@@ -1,0 +1,78 @@
+box: golang
+
+dev:
+  steps:
+    - setup-go-workspace:
+        package-dir: github.com/mujtabaahmed1991/learngo
+
+    - script:
+        name: env
+        code: env
+
+    - script:
+        name: go get
+        code: |
+          cd $WERCKER_SOURCE_DIR
+          go version
+          #go get -u github.com/Masterminds/glide
+          go get -u github.com/unrolled/render
+          #export PATH=$WERCKER_SOURCE_DIR/bin:$PATH
+          #glide install
+
+    - internal/watch:
+        code: go run code/latency.go
+        reload: true
+
+build:
+  steps:
+    - setup-go-workspace:
+        package-dir: github.com/mujtabaahmed1991/learngo
+
+    - script:
+        name: env
+        code: env
+
+    - script:
+        name: go get
+        code: |
+          cd $WERCKER_SOURCE_DIR
+          go version
+          #go get -u github.com/Masterminds/glide
+          go get -u github.com/unrolled/render
+          #export PATH=$WERCKER_SOURCE_DIR/bin:$PATH
+          #glide install
+
+    - script:
+        name: go build
+        code: |
+          go build
+
+    - script:
+        name: go test
+        code: |
+          go test -v $(glide novendor)
+
+    - script:
+        name: copy files to wercker output
+        code: |
+          cp -R ./ ${WERCKER_OUTPUT_DIR}
+
+deploy:
+  steps:
+    - internal/docker-push:
+      username: $DOCKER_USERNAME
+      password: $DOCKER_PASSWORD
+      cmd: /pipeline/source/latency
+      port: "8080"
+      tag: latest
+      repository: mujtaba1991/learngo
+      registry: https://registry.hub.docker.com
+
+    - cng/cf-deploy:
+      api: $API
+      user: $USER
+      password: $PASSWORD
+      org: $ORG
+      space: $SPACE
+      appname: wercker-learngo
+      docker_image: mujtaba1991/learngo  
