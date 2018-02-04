@@ -17,7 +17,7 @@ var cmd bool
 
 func PublishHttpLatency(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		formatter.JSON(w, http.StatusOK, GetAverageHTTPLatencyOverInterval(1, "https://gitlab.com"))
+		formatter.JSON(w, http.StatusOK, GetAverageHTTPLatencyOverInterval(5, "https://gitlab.com"))
 	}
 }
 

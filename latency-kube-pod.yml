@@ -1,0 +1,16 @@
+apiVersion: "v1"
+kind: Pod
+metadata:
+  name: latency-gitlab
+  labels:
+    name: latency-gitlab
+    app: exercise-gitlab
+spec:
+  containers:
+    - name: latency-gitlab
+      image: mujtaba1991/learngo
+      ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+

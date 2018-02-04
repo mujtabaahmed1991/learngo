@@ -50,7 +50,8 @@ build:
     - script:
         name: go test
         code: |
-          go test -v $(glide novendor)
+          go test -v
+          go test --bench latency_test.go
 
     - script:
         name: copy files to wercker output
